@@ -1,15 +1,20 @@
-﻿namespace BlaisePascal.PlayerExercise.Domain
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BlaisePascal.PlayerExercise.Domain
 {
     public class Player
     {
-        //attribute
-        private int _health;
-        private int _level;
+        
+        public int Experience { get; private set; }
+
+        public int MaxHealth { get; private set; }
+
+        public int Gold { get; private set; }
 
         public string Name { get; set; }
 
-
-
+        //attribute
+        private int _level;
         public int Level
         {
             get
@@ -29,44 +34,26 @@
             }
         }
 
-           
-
-        public int Health
-        {
-            get
-            {
-                return _health;
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    _health = 0;
-                }
-                else if (value > 100)
-                {
-                    _health = 100;
-                }
-                else
-                {
-                    _health = value;
-                }
-            }
-        }
+        public int Health { get; private set; }
+        
 
         public int Damage { get; private set; }
 
         //costruttore
-        public Player(string name, int health, int damage)
+        public Player(string name, int level, int maxHealth, int gold )
         {
             Name = name;
-            Health = health;
-            Damage = damage;
+            Level = level;
+            Health = maxHealth;
+            MaxHealth = maxHealth;
+            Gold = gold;
+            Experience = 0;
+
         }
 
         public bool IsAlive()
         {
-            return _health > 0;
+            return Health > 0;
         }
 
         public void TakeDamage(int damage)
@@ -76,6 +63,24 @@
                 Health -= damage;
             }
         }
+
+        public void AddExp(int exp)
+        {
+            if (exp > 0)
+            {
+                Experience += exp;
+            }
+        }
+
+        public void Healing(int HpCured)
+        {
+            if (HpCured > 0 && Health < MaxHealth)
+            {
+                Health += HpCured ;
+            }
+        }
+
+
     }
 
 }
