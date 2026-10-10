@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\BlaisePascal.PlayerExercise.Domain\BlaisePascal.PlayerExercise.Domain.csproj" />
     <ProjectReference Include="..\..\src\BlaisPascal.PlayerExercise.Domain\BlaisePascal.PlayerExercise.Domain.csproj" />
   </ItemGroup>
 

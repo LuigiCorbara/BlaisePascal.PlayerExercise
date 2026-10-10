@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Net.Security;
 
 namespace BlaisePascal.PlayerExercise.Domain
 {
     public class Player
     {
-        
+
         public int Experience { get; private set; }
 
         public int MaxHealth { get; private set; }
@@ -27,7 +28,7 @@ namespace BlaisePascal.PlayerExercise.Domain
                 {
                     _level = 1;
                 }
-                else 
+                else
                 {
                     _level = value;
                 }
@@ -35,12 +36,9 @@ namespace BlaisePascal.PlayerExercise.Domain
         }
 
         public int Health { get; private set; }
-        
-
-        public int Damage { get; private set; }
 
         //costruttore
-        public Player(string name, int level, int maxHealth, int gold )
+        public Player(string name, int level, int maxHealth, int gold)
         {
             Name = name;
             Level = level;
@@ -72,16 +70,41 @@ namespace BlaisePascal.PlayerExercise.Domain
             }
         }
 
+        public void ResetExperience()
+        {
+            Experience = 0;
+        }
+
         public void Healing(int HpCured)
         {
-            if (HpCured > 0 && Health < MaxHealth)
+            if (Health <= 0)
             {
-                Health += HpCured ;
+                throw new Exception("Player is dead and cannot be healed.");
+            }
+            else if (HpCured > 0 && Health < MaxHealth)
+            {
+                Health += HpCured;
             }
         }
 
+        public void ResetHealth()
+        {
+            Health = MaxHealth;
 
+        }
+
+
+        public void LevelUp() 
+        {
+            int expRequiredToLevelUp = Level * 100;
+
+            if (Experience >= expRequiredToLevelUp)
+            {
+                Level++;
+                Experience -= expRequiredToLevelUp;
+
+            }
+        }
     }
-
 }
 
