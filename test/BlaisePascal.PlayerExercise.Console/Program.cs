@@ -11,8 +11,10 @@ public class Program
         WriteLine($"Max health {player.MaxHealth}");
         WriteLine($"Health {player.Health}");
         WriteLine($"player is alive: {player.IsAlive()}");
-        player.TakeDamage(50);
+        player.TakeDamage(100);
         player.Healing(49);
         WriteLine($"Health after taking damage and healing {player.Health}");
+        player.ResetHealth();
+        WriteLine($"Health after reset {player.Health}");
     }
 }
