@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System;
+using System.Net.Security;
+
 namespace BlaisePascal.PlayerExercise.Domain
 {
     public class Player
@@ -36,17 +37,14 @@ namespace BlaisePascal.PlayerExercise.Domain
 
         public int Health { get; private set; }
 
-
-        public int Damage { get; private set; }
-
         //costruttore
-        public Player(string name, int level, int maxHealth, int gold)
+        public Player(string name, int level, int maxHealth)
         {
             Name = name;
             Level = level;
             Health = maxHealth;
             MaxHealth = maxHealth;
-            Gold = gold;
+            Gold = 0;
             Experience = 0;
 
         }
@@ -70,15 +68,35 @@ namespace BlaisePascal.PlayerExercise.Domain
             {
                 Experience += exp;
             }
+            else
+            {
+                throw new Exception("Experience cannot be negative.");
+            }
+        }
+        public void ResetExperience()
+        {
+            if (Experience == 0)
+            {
+                throw new Exception("Experience is already at zero.");
+            }
+            Experience = 0;
         }
 
         public void Healing(int HpCured)
         {
-            if (Health == 0)
+            if (Health <= 0)
             {
-                throw new ArgumentException("Player is dead, cannot healed.");
-
-            } else if (HpCured > 0 && Health < MaxHealth)
+                throw new Exception("Player is dead and cannot be healed.");
+            }
+            else if (HpCured <= 0)
+            {
+                throw new Exception("Healing amount cannot be zero or negative.");
+            }
+            else if (Health + HpCured > MaxHealth)
+            {
+                Health = MaxHealth;
+            }
+            else if(HpCured > 0 && Health < MaxHealth)
             {
                 Health += HpCured;
             }
@@ -86,8 +104,29 @@ namespace BlaisePascal.PlayerExercise.Domain
 
         public void ResetHealth()
         {
+            if (Health == MaxHealth)
+            {
+                throw new Exception("Health is already at maximum.");
+            }
             Health = MaxHealth;
+
+        }
+
+        public void LevelUp() 
+        {
+            int expRequiredToLevelUp = 100;
+
+            if (Experience < expRequiredToLevelUp)
+            {
+                throw new Exception("Not enough exp to level up.");
+            }
+           
+            while (Experience >= expRequiredToLevelUp)
+            {
+                Level++;
+                Experience -= expRequiredToLevelUp;
+                expRequiredToLevelUp = Level * 100;
+            }
         }
     }
 }
-
